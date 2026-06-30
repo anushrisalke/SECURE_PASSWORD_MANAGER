@@ -25,7 +25,8 @@ while True:
     print("1. Save Password")
     print("2. View Password")
     print("3. Generate Password")
-    print("4. Exit")
+    print("4. Search Password")
+    print("5. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -52,6 +53,15 @@ while True:
         print("Generated Password:", generate_password())
 
     elif choice == "4":
+     site = input("Enter website to search: ")
+
+     if site in password:
+        print(f"Website : {site}")
+        print(f"Password: {password[site]}")
+     else:
+        print("Website not found!")
+
+    elif choice == "5":
         print("OK ,BYE... Thank you for using Password Manager!")
         break
 
