@@ -4,14 +4,21 @@ import string
 password = {}
 
 # Load saved passwords
-try:
+
+
+def load_password():
+ try:
     with open("password.txt", "r") as file:
         for line in file:
             website, pwd = line.strip().split(":")
             password[website] = pwd
-except FileNotFoundError:
+ except FileNotFoundError:
     pass
 
+def save_to_file():
+    with open("password.txt", "w") as file:
+        for website, pwd in password.items():
+            file.write(f"{website}:{pwd}\n")
 
 # Function to generate a random password
 def generate_password():
@@ -19,6 +26,15 @@ def generate_password():
     pwd = "".join(random.choice(chars) for _ in range(8))
     return pwd
 
+def view_passwords():
+    if not password:
+        print("No passwords saved.")
+    else:
+        print("\nSaved Passwords:")
+        for site, pwd in password.items():
+            print(site, ":", pwd)
+
+load_password()
 
 while True:
     print("\n----- PERSONAL PASSWORD MANAGER -----")
@@ -27,7 +43,8 @@ while True:
     print("3. Generate Password")
     print("4. Search Password")
     print("5. Update Password")
-    print("6. Exit")
+    print("6. Delete password")
+    print("7. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -43,12 +60,7 @@ while True:
         print("Password saved successfully!")
 
     elif choice == "2":
-        if not password:
-            print("No passwords saved.")
-        else:
-            print("\nSaved Passwords:")
-            for site, pwd in password.items():
-                print(site, ":", pwd)
+        view_passwords()
 
     elif choice == "3":
         print("Generated Password:", generate_password())
@@ -70,16 +82,27 @@ while True:
 
         password[site] = new_pwd
 
-        with open("password.txt", "w") as file:
-            for website, pwd in password.items():
-                file.write(f"{website}:{pwd}\n")
+        save_to_file()
 
         print("Password updated successfully!")
 
      else:
         print("Website not found!")
-
+   
     elif choice == "6":
+     site = input("Enter website to delete: ").lower()
+
+     if site in password:
+        del password[site]
+
+        save_to_file()
+
+        print("Password deleted successfully!")
+
+     else:
+        print("Website not found!")
+
+    elif choice == "7":
         print("OK ,BYE... Thank you for using Password Manager!")
         break
 
