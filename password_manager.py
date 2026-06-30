@@ -26,12 +26,13 @@ while True:
     print("2. View Password")
     print("3. Generate Password")
     print("4. Search Password")
-    print("5. Exit")
+    print("5. Update Password")
+    print("6. Exit")
 
     choice = input("Enter your choice: ")
 
     if choice == "1":
-        site = input("Enter website: ")
+        site = input("Enter website: ").lower()
         pwd = input("Enter password: ")
 
         password[site] = pwd
@@ -53,15 +54,32 @@ while True:
         print("Generated Password:", generate_password())
 
     elif choice == "4":
-     site = input("Enter website to search: ")
+     site = input("Enter website to search: ").lower()
 
      if site in password:
         print(f"Website : {site}")
         print(f"Password: {password[site]}")
      else:
         print("Website not found!")
-
+    
     elif choice == "5":
+     site = input("Enter website to update: ").lower()
+
+     if site in password:
+        new_pwd = input("Enter new password: ")
+
+        password[site] = new_pwd
+
+        with open("password.txt", "w") as file:
+            for website, pwd in password.items():
+                file.write(f"{website}:{pwd}\n")
+
+        print("Password updated successfully!")
+
+     else:
+        print("Website not found!")
+
+    elif choice == "6":
         print("OK ,BYE... Thank you for using Password Manager!")
         break
 
