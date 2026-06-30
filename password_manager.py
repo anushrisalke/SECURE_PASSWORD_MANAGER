@@ -6,7 +6,7 @@ password = {}
 # Load saved passwords
 
 
-def load_password():
+def load_passwords():
  try:
     with open("password.txt", "r") as file:
         for line in file:
@@ -34,7 +34,41 @@ def view_passwords():
         for site, pwd in password.items():
             print(site, ":", pwd)
 
-load_password()
+def search_password():
+   site = input("Enter website to search: ").lower()
+   if site in password:
+        print(f"Website : {site}")
+        print(f"Password: {password[site]}")
+   else:
+        print("Website not found!")
+
+def update_password():
+    site = input("Enter website to update: ").lower()
+    if site in password:
+        new_pwd = input("Enter new password: ")
+        password[site] = new_pwd
+        save_to_file()
+        print("Password updated successfully!")
+    else:
+        print("Website not found!")
+
+def delete_password():
+    site = input("Enter website to delete: ").lower()
+    if site in password:
+        del password[site]
+        save_to_file()
+        print("Password deleted successfully!")
+    else:
+        print("Website not found!")
+
+def save_password():
+    site = input("Enter website: ").lower()
+    pwd = input("Enter password: ")
+    password[site] = pwd
+    save_to_file()
+    print("Password saved successfully!")
+
+load_passwords()
 
 while True:
     print("\n----- PERSONAL PASSWORD MANAGER -----")
@@ -49,15 +83,7 @@ while True:
     choice = input("Enter your choice: ")
 
     if choice == "1":
-        site = input("Enter website: ").lower()
-        pwd = input("Enter password: ")
-
-        password[site] = pwd
-
-        with open("password.txt", "a") as file:
-            file.write(f"{site}:{pwd}\n")
-
-        print("Password saved successfully!")
+       save_password()
 
     elif choice == "2":
         view_passwords()
@@ -66,41 +92,14 @@ while True:
         print("Generated Password:", generate_password())
 
     elif choice == "4":
-     site = input("Enter website to search: ").lower()
-
-     if site in password:
-        print(f"Website : {site}")
-        print(f"Password: {password[site]}")
-     else:
-        print("Website not found!")
+     search_password()
     
     elif choice == "5":
-     site = input("Enter website to update: ").lower()
+     update_password()
 
-     if site in password:
-        new_pwd = input("Enter new password: ")
-
-        password[site] = new_pwd
-
-        save_to_file()
-
-        print("Password updated successfully!")
-
-     else:
-        print("Website not found!")
-   
+     
     elif choice == "6":
-     site = input("Enter website to delete: ").lower()
-
-     if site in password:
-        del password[site]
-
-        save_to_file()
-
-        print("Password deleted successfully!")
-
-     else:
-        print("Website not found!")
+     delete_password()
 
     elif choice == "7":
         print("OK ,BYE... Thank you for using Password Manager!")
